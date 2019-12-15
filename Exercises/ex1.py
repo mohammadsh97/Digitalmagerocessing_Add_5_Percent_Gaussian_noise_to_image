@@ -1,4 +1,3 @@
-#Mohammad sharabati 208979096
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
