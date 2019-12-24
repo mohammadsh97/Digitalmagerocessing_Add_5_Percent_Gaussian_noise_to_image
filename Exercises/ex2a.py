@@ -134,9 +134,6 @@ def imgCopy(img):
 def toDrawLine(first, sec): #to draw lines
     getX = plt.gca()
     xmin, xmax = getX.get_xbound()
-    print(first)
-    print(sec)
-    exit(0)
 
     if (sec[0] == first[0]):
         xmin = xmax = first[0]
@@ -220,4 +217,3 @@ toDrawLine(maxLine2, minLine2)
 toDrawLine(maxLine3, minLine3)
 toDrawLine(maxLine4, minLine4)
 plt.show()
-

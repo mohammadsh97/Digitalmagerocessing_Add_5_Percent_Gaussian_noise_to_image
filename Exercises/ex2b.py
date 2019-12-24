@@ -8,6 +8,14 @@ import matplotlib.pyplot as plt
 img = np.zeros((500, 400 , 3), np.uint8)  # check the np.unit8
 img = cv2.rectangle(img, (100, 100), (300, 400), (255, 255, 255), -1)
 
+def noisy(image):
+   image = np.array(image)
+   GaussNoiseImg = np.random.normal(0, (0.1 ** 0.5) , (500, 400))
+   GaussNoiseImg = GaussNoiseImg.reshape(500, 400)
+   GaussNoiseImg = np.array(GaussNoiseImg)
+   noiseImg = GaussNoiseImg + image
+   noiseImg = np.array(noiseImg)
+   return noiseImg
 
 def convFunc(image, kernel):
    (iH, iW) = image.shape[:2]
@@ -45,45 +53,13 @@ def hough_line(img):
         accumulator[rho, t_idx] += 1
     return accumulator, thetas, rhos
 
+# filter =  np.array([[-1, -1, -1],[-1, 9, -1],[-1, -1, -1]])
 
-
-def add_normal_noise(img,perc=10):
-    """
-    Adds normally distributed noise with a chance of -perc- %
-    :param img: original image [numpy.array]
-    :param perc: percentage of noise [int]
-    :return: new image with noise [numpy.array]
-    """
-    if perc<0 or perc>100:
-        perc=5;
-    newimg = []
-    for i in range(0,(img.shape[0])):
-        row=[]
-        for j in range(0,(img.shape[1])):
-            # add noise in chance of perc%
-            r = random.randint(1,100)
-            if r<=perc:
-                row.append(np.random.normal(127,45,None))
-            else:
-                row.append(img[i][j])
-        newimg.append(row)
-    newimg = np.array(newimg)
-    return newimg
-
-filter =  np.array([[-1, -1, -1],[-1, 9, -1],[-1, -1, -1]])
-
-clnImg = []
-for i in range(img.shape[0]):#this loop to get rid of noise
-    indx = []
-    for j in range(img.shape[1]):
-        if img[i][j][0] > 0 and img[i][j][1] > 0 and img[i][j][2] > 0:
-            indx.append(1)
-        else:
-            indx.append(0)
-    clnImg.append(indx)
-clnImg = np.array(clnImg)
-
-# conF = convFunc(clnImg,filter)
-# conF = add_normal_noise(conF)
-plt.subplot(221),plt.imshow(clnImg.astype('uint8'),cmap="gray")
+img = np.array(img)
+img = img[:,:,0]
+noiseImg = noisy(img)
+# conF = convFunc(img,filter)
+plt.subplot(221),plt.imshow(img.astype('uint8'),cmap="gray")
+plt.subplot(222),plt.imshow(noiseImg.astype('uint8'),cmap="gray")
+# plt.subplot(223),plt.imshow(conF.astype('uint8'),cmap="gray")
 plt.show()
